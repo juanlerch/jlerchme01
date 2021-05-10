@@ -14,8 +14,11 @@ public class DB {
 	
 	public static  String HUMAN = "HUMAN";
 	public static  String MUTANT= "MUTANT";
+	
 
 	Datastore datastore; 
+	
+	
 	
 	public DB() {
 		this.datastore = DatastoreOptions.getDefaultInstance().getService();
@@ -46,14 +49,7 @@ public class DB {
 		if(esMutante) {
 			kind = MUTANT;
 		}
-		
-		//KeyFactory keyFactory = datastore.newKeyFactory().setKind(kind);
-	    //IncompleteKey key = keyFactory.setKind(kind).newKey(dnaAsKey(dna.dna));
-	    
-	    // Record a visit to the datastore, storing the IP and timestamp.
-	    //FullEntity<IncompleteKey> entity =
-	      //  FullEntity.newBuilder(key).set("dna", dna.dna.toString()).build();
-	    
+
 	    
 	    Key key = datastore.newKeyFactory()
 	    	    .setKind(kind)

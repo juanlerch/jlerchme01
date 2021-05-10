@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Mutante.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jlerchme</a> &gt; <a href="index.source.html" class="el_package">com.jlerch.me</a> &gt; <span class="el_source">Mutante.java</span></div><h1>Mutante.java</h1><pre class="source lang-java linenums">package com.jlerch.me;
+
+import javax.management.RuntimeErrorException;
+
+<span class="fc" id="L5">public class Mutante {</span>
+
+	
+	char getBaseNitrogenada(String[] dna, int fila,int columna){
+		
+<span class="fc bfc" id="L10" title="All 4 branches covered.">		if (fila&lt;0 || fila&gt;(dna.length-1)) { return '-';};</span>
+		
+<span class="fc" id="L12">		String d = dna[fila];</span>
+			
+<span class="fc bfc" id="L14" title="All 4 branches covered.">		if (columna&lt;0 || columna&gt;(d.length()-1)) { return '-';};</span>
+			
+<span class="fc" id="L16">		char bn = d.charAt(columna);</span>
+<span class="fc" id="L17">		return bn;</span>
+	}
+	
+	
+	private int check(String[] dna, int fila, int columna, int incFila, int incCol) {
+		
+		
+<span class="fc" id="L24">		char muestra = getBaseNitrogenada(dna,fila,columna);</span>
+		
+<span class="fc" id="L26">		System.out.print(&quot;Check... &quot; + fila + &quot;,&quot; + columna + &quot;: &quot; + muestra + &quot; ( &quot; + incFila + &quot;,&quot; + incCol + &quot; )  &quot;);</span>
+		
+<span class="fc bfc" id="L28" title="All 2 branches covered.">		for(int c=1;c&lt;=3;c++) {</span>
+<span class="fc" id="L29">			char muestra2 = getBaseNitrogenada(dna,fila+c*incFila,columna+c*incCol);</span>
+<span class="fc" id="L30">			System.out.print(&quot;...&quot; + muestra2);</span>
+<span class="fc bfc" id="L31" title="All 2 branches covered.">			if(muestra2!=muestra) </span>
+				{
+<span class="fc" id="L33">				System.out.println(&quot; -&gt; NO&quot; );</span>
+<span class="fc" id="L34">				return 0;</span>
+				}
+		}
+		
+<span class="fc" id="L38">		System.out.println(&quot; -&gt; SI&quot; );</span>
+<span class="fc" id="L39">		return 1; //encontro 4 muestras iguales en la direccion de busqueda;</span>
+	}
+	
+	public boolean isMutant(String[] dna) {
+		
+<span class="fc" id="L44">		int encontrados=0;</span>
+		
+<span class="fc bfc" id="L46" title="All 2 branches covered.">		for(int fila=0; fila&lt; dna.length; fila++) </span>
+		{	
+			
+<span class="fc" id="L49">			String cadena = dna[fila];</span>
+
+<span class="fc bfc" id="L51" title="All 2 branches covered.">			for(int columna=0; columna&lt; dna.length; columna++) {</span>
+
+<span class="fc" id="L53">				encontrados    += check(dna,fila,columna,0,1); //horizontal</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">				if(encontrados&lt;2) encontrados    += check(dna,fila,columna, 1 ,0);   //vertical</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">				if(encontrados&lt;2) encontrados    += check(dna,fila,columna, 1, 1);   //oblicuo1</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">				if(encontrados&lt;2) encontrados    += check(dna,fila,columna,-1,-1);   //oblicuo2</span>
+				
+<span class="fc bfc" id="L58" title="All 2 branches covered.">				if(encontrados&gt;1) return true;</span>
+				
+			}
+		}
+		
+<span class="fc" id="L63">		return false;</span>
+		
+		
+	}
+	
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

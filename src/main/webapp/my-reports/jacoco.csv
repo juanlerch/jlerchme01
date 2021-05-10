@@ -1,0 +1,7 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+jlerchme,com.jlerch.me.model,DNA,0,3,0,0,0,1,0,1,0,1
+jlerchme,com.jlerch.me.model,Stat,0,12,0,0,0,4,0,1,0,1
+jlerchme,com.jlerch.me.ws,StatApi,5,37,1,1,0,13,1,3,0,3
+jlerchme,com.jlerch.me.ws,XmenApi,6,71,1,5,0,22,1,6,0,4
+jlerchme,com.jlerch.me.backend,DB,41,142,4,6,15,36,5,8,2,6
+jlerchme,com.jlerch.me,Mutante,0,187,1,23,0,26,1,15,0,4

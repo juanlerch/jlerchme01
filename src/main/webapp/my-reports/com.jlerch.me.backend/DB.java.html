@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DB.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jlerchme</a> &gt; <a href="index.source.html" class="el_package">com.jlerch.me.backend</a> &gt; <span class="el_source">DB.java</span></div><h1>DB.java</h1><pre class="source lang-java linenums">package com.jlerch.me.backend;
+
+import com.google.cloud.datastore.Datastore;
+import com.google.cloud.datastore.DatastoreOptions;
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.Key;
+import com.google.cloud.datastore.Query;
+import com.google.cloud.datastore.QueryResults;
+import com.google.gson.Gson;
+import com.jlerch.me.model.DNA;
+import com.jlerch.me.model.Stat;
+
+public class DB {
+	
+<span class="fc" id="L15">	public static  String HUMAN = &quot;HUMAN&quot;;</span>
+<span class="fc" id="L16">	public static  String MUTANT= &quot;MUTANT&quot;;</span>
+	
+
+	Datastore datastore; 
+	
+	
+	
+<span class="nc" id="L23">	public DB() {</span>
+<span class="nc" id="L24">		this.datastore = DatastoreOptions.getDefaultInstance().getService();</span>
+<span class="nc" id="L25">	}</span>
+	
+<span class="fc" id="L27">	public DB(Datastore datastore) {</span>
+<span class="fc" id="L28">		this.datastore = datastore;</span>
+<span class="fc" id="L29">	}</span>
+	
+	private String dnaAsKey(String[] dna) {
+  
+<span class="fc" id="L33">		  StringBuffer sb = new StringBuffer();</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">	      for(int i = 0; i &lt; dna.length; i++) {</span>
+<span class="fc" id="L35">	         sb.append(dna[i]);</span>
+	      }
+	      
+<span class="fc" id="L38">	      return sb.toString();</span>
+	      
+	}
+	
+	public void save(DNA dna,boolean esMutante) {
+		
+		 
+<span class="fc" id="L45">		Gson gson = new Gson();</span>
+<span class="fc" id="L46">		String json = gson.toJson(dna); </span>
+				
+<span class="fc" id="L48">		String kind = HUMAN;</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">		if(esMutante) {</span>
+<span class="fc" id="L50">			kind = MUTANT;</span>
+		}
+		
+		//KeyFactory keyFactory = datastore.newKeyFactory().setKind(kind);
+	    //IncompleteKey key = keyFactory.setKind(kind).newKey(dnaAsKey(dna.dna));
+	    
+	    // Record a visit to the datastore, storing the IP and timestamp.
+	    //FullEntity&lt;IncompleteKey&gt; entity =
+	      //  FullEntity.newBuilder(key).set(&quot;dna&quot;, dna.dna.toString()).build();
+	    
+	    
+<span class="fc" id="L61">	    Key key = datastore.newKeyFactory()</span>
+<span class="fc" id="L62">	    	    .setKind(kind)</span>
+<span class="fc" id="L63">	    	    .newKey(dnaAsKey(dna.dna));</span>
+	    
+<span class="fc" id="L65">	    Entity find = datastore.get(key);</span>
+	    
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">	    if(find==null) {</span>
+<span class="fc" id="L68">		   	Entity entity = Entity.newBuilder(key)</span>
+<span class="fc" id="L69">		    	    .set(&quot;dna&quot;, json)</span>
+<span class="fc" id="L70">		    	    .build();</span>
+		    
+<span class="fc" id="L72">		    datastore.add(entity);</span>
+	    }
+	
+
+<span class="fc" id="L76">	}</span>
+
+	private long  count(String king) {
+		//cuando hay estadisticas de disponibles
+<span class="fc" id="L80">	    Query&lt;Entity&gt; query =Query.newGqlQueryBuilder(Query.ResultType.ENTITY, &quot;SELECT * FROM __Stat_&quot; + HUMAN +&quot;__&quot;).build();</span>
+<span class="fc" id="L81">	    QueryResults&lt;Entity&gt; results = datastore.run(query);</span>
+
+<span class="fc" id="L83">	    Stat stat = new Stat();</span>
+	    
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">	    if (results.hasNext()) {</span>
+<span class="fc" id="L86">	    	Entity e = results.next();</span>
+<span class="fc" id="L87">	    	System.out.println(&quot;count..stat..&quot;);</span>
+<span class="fc" id="L88">	    	return e.getLong(&quot;count&quot;);</span>
+	    }
+<span class="nc" id="L90">	    return count2(king); </span>
+	    
+	}
+	
+	private long  count2(String king) {
+		    // cuando no hay estadisticas de disponibles
+<span class="nc" id="L96">			Query&lt;Entity&gt; query =</span>
+<span class="nc" id="L97">		        Query.newEntityQueryBuilder()</span>
+<span class="nc" id="L98">		            .setKind(king)</span>
+<span class="nc" id="L99">		            .build();</span>
+<span class="nc" id="L100">		    QueryResults&lt;Entity&gt; results = datastore.run(query);</span>
+<span class="nc" id="L101">		    long count=0l;</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">		    while(results.hasNext()){</span>
+<span class="nc" id="L103">		    	results.next();</span>
+<span class="nc" id="L104">		    	count++;</span>
+		    }
+<span class="nc" id="L106">		    System.out.println(&quot;count..loop..&quot;);</span>
+<span class="nc" id="L107">	    return count;	    </span>
+	}
+	
+	
+	public Stat stat() {
+<span class="fc" id="L112">		Stat stat = new Stat();</span>
+<span class="fc" id="L113">	    stat.count_human_dna = count(HUMAN);</span>
+<span class="fc" id="L114">	    stat.count_mutant_dna= count(MUTANT);</span>
+<span class="fc" id="L115">		stat.ratio = 1.0d * stat.count_mutant_dna / stat.count_human_dna;</span>
+<span class="fc" id="L116">		return stat;</span>
+	}
+
+	
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

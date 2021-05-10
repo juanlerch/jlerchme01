@@ -19,6 +19,7 @@ import com.jlerch.me.model.DNA;
 )
 public class XmenApi extends HttpServlet {
 
+ DB db;
 	
  private String readJson(HttpServletRequest request) {
 
@@ -46,8 +47,8 @@ public class XmenApi extends HttpServlet {
       Mutante mutante = new Mutante();
       boolean esMutante = mutante.isMutant(dna.dna);
 	  
-      DB db = new DB();
-      db.save(dna, json,esMutante);
+      if (db==null) db = new DB();
+      db.save(dna,esMutante);
       
       if (esMutante) {
     	  response.setStatus(HttpServletResponse.SC_OK);
@@ -56,4 +57,11 @@ public class XmenApi extends HttpServlet {
       }
 
   }
+
+
+	public void setDb(DB db) {
+		this.db = db;
+	}
+  
+  
 }

@@ -25,6 +25,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
   private String encoding;
   private StringWriter writerContent = new StringWriter();
   private PrintWriter writer = new PrintWriter(writerContent);
+  private int status;
 
   @Override
   public void setContentType(String contentType) {
@@ -168,6 +169,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
   @Override
   public void setStatus(int arg0) {
+	  this.status=arg0;
   }
 
   @Override
@@ -179,7 +181,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
   }
 
   public int getStatus() {
-    return 0;
+    return this.status;
   }
   
   public String getHeader(String name) {

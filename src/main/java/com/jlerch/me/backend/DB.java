@@ -1,20 +1,12 @@
 package com.jlerch.me.backend;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import com.google.cloud.datastore.Datastore;
 import com.google.cloud.datastore.DatastoreOptions;
 import com.google.cloud.datastore.Entity;
-import com.google.cloud.datastore.FullEntity;
-import com.google.cloud.datastore.IncompleteKey;
 import com.google.cloud.datastore.Key;
-import com.google.cloud.datastore.KeyFactory;
 import com.google.cloud.datastore.Query;
 import com.google.cloud.datastore.QueryResults;
-import com.google.cloud.datastore.StringValue;
-import com.google.cloud.datastore.StructuredQuery;
+import com.google.gson.Gson;
 import com.jlerch.me.model.DNA;
 import com.jlerch.me.model.Stat;
 
@@ -26,8 +18,11 @@ public class DB {
 	Datastore datastore; 
 	
 	public DB() {
-		datastore = DatastoreOptions.getDefaultInstance().getService();
-		
+		this.datastore = DatastoreOptions.getDefaultInstance().getService();
+	}
+	
+	public DB(Datastore datastore) {
+		this.datastore = datastore;
 	}
 	
 	private String dnaAsKey(String[] dna) {
@@ -41,8 +36,12 @@ public class DB {
 	      
 	}
 	
-	public void save(DNA dna,String json,boolean esMutante) {
+	public void save(DNA dna,boolean esMutante) {
 		
+		 
+		Gson gson = new Gson();
+		String json = gson.toJson(dna); 
+				
 		String kind = HUMAN;
 		if(esMutante) {
 			kind = MUTANT;
@@ -59,6 +58,7 @@ public class DB {
 	    Key key = datastore.newKeyFactory()
 	    	    .setKind(kind)
 	    	    .newKey(dnaAsKey(dna.dna));
+	    
 	    Entity find = datastore.get(key);
 	    
 	    if(find==null) {
@@ -75,7 +75,7 @@ public class DB {
 	private long  count(String king) {
 		//cuando hay estadisticas de disponibles
 	    Query<Entity> query =Query.newGqlQueryBuilder(Query.ResultType.ENTITY, "SELECT * FROM __Stat_" + HUMAN +"__").build();
-	    QueryResults<Entity> results = datastore. run(query);
+	    QueryResults<Entity> results = datastore.run(query);
 
 	    Stat stat = new Stat();
 	    
@@ -84,7 +84,7 @@ public class DB {
 	    	System.out.println("count..stat..");
 	    	return e.getLong("count");
 	    }
-	    return count2(king);
+	    return count2(king); 
 	    
 	}
 	

@@ -67,20 +67,4 @@ public class Mutante {
 	
 	
 	
-
-	public static void main(String[] args) {
-		
-		String[] dnaHumano= {"ATGCGA","CAGTGC","TTATTT","AGACGG","GCGTCA","TCACTG"};
-		String[] dnaMutante =  {"ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"};
-		
-		String[] dna = dnaMutante;
-		for (String d:dna)System.out.println(d);		
-		Mutante m = new Mutante();
-		
-		boolean isMustand = m.isMutant(dna);
-		
-		System.out.println("Es Mustante:" + isMustand);
-		
-	}
-	
 }

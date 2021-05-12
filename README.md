@@ -24,7 +24,7 @@ https://jlerchme02.appspot.com/stat
 
 - Para soportar fluctuaciones agresivas de tráfico.. se propone desplegar el aplicativo con Docker en  Google Kubernetes Engine. 
 
-- Los comandos de GCloud para crear el cluster se encuentra en el archivo “kuberentes”. 
+- Los comandos de GCloud para crear el cluster se encuentra en el archivo “kubernetes”. 
 
 NOTA: Por requerimiento de Google Cloud, primero se debe desplegar el proyecto en Google App Engine Flexible para tener acceso desde Kubernetes al servicio de Datastore (ver instrucciones)
 

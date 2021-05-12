@@ -105,6 +105,7 @@ public class DB {
 		Stat stat = new Stat();
 	    stat.count_human_dna = count(HUMAN);
 	    stat.count_mutant_dna= count(MUTANT);
+	    if(stat.count_human_dna>0)
 		stat.ratio = 1.0d * stat.count_mutant_dna / stat.count_human_dna;
 		return stat;
 	}

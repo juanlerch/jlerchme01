@@ -22,6 +22,8 @@ NOTA: en caso de necesitar estadísticas más recientes, lo que se suele hacer (
 - El servicio /stats se encuentra publicado en 
 https://jlerchme02.appspot.com/stat
 
+- Se implemento mediante WebServlet en las clases StatApi.java
+
 - Para soportar fluctuaciones agresivas de tráfico.. se propone desplegar el aplicativo con Docker en  Google Kubernetes Engine. 
 
 - Los comandos de GCloud para crear el cluster se encuentra en el archivo “kubernetes”. 
